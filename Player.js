@@ -8,7 +8,6 @@ class Player {
      this.sprite = scene.physics.add.sprite(x, y, spriteName);
      this.sprite.setSize(38,50);
      this.sprite.setCollideWorldBounds(true);
-     
     }
 
     plusInvItem(playerSprite,item) {
