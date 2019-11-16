@@ -59,6 +59,7 @@ class Scene2 extends Phaser.Scene {
   update() {
     this.movePlayer1Manager();
     this.movePlayer2Manager();
+    this.IsThisCommit;
   }
 
   movePlayer1Manager() {
