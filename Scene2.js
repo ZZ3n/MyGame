@@ -2,12 +2,13 @@ class Scene2 extends Phaser.Scene {
   constructor() {
     super("playGame"); // 씬 이름 저장하는거.
   }
-  create() {
-    this.background = this.add.tileSprite(0, 0, config.width, config.height, "background");
-    // config의 너비와 높이가 이미지의 크기로 맞추어져 있다.
-    this.background.setOrigin(0, 0); // 원래 pivot이 중간인가보다.
-    this.platforms = this.physics.add.staticGroup();
 
+  preload() {
+    // # 1 맵
+    this.background = this.add.tileSprite(0, 0, config.width, config.height, "background");
+    this.background.setOrigin(0, 0);
+
+    this.platforms = this.physics.add.staticGroup();
     this.platforms.create(config.width / 2, config.height, 'grass').setScale(25, 3).refreshBody();
     this.platforms.create(config.width / 2, config.height * 2 / 3, 'grass').setScale(4, 0.5).refreshBody();
 
@@ -16,9 +17,38 @@ class Scene2 extends Phaser.Scene {
       fill: "yellow"
     });
 
+    // # 2 인게임 오브젝트 생성.
+
     this.items = this.physics.add.group();
 
+    this.player1 = new Player(this, config.width / 2 - 100, config.height / 2, "player1", "p1");
+    this.player2 = new Player(this, config.width / 2 + 100, config.height / 2, "player2", "p2");
+    this.player1.invCount = 0;
+    // # 3 키 바인딩
+
+    this.cursorKeys = this.input.keyboard.createCursorKeys();
+    this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+    this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+    this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+    this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+
+  }
+
+  create() {
+
+    this.player1InventoryDisplay = this.add.text(20, 100, "Player1 Inventory Count  \n" + this.player1.invCount, {
+      font: "20px Arial",
+      fill: "black"
+    });
+
+    this.player2InventoryDisplay = this.add.text(1050, 100, "Player2 Inventory Count  \n" + this.player2.invCount, {
+      font: "20px Arial",
+      fill: "black"
+    });
+
+
     var maxObjects = 10;
+
     for (var i = 0; i <= maxObjects; i++) {
       var item = this.physics.add.sprite(32, 32, "item_pink");
       this.items.add(item);
@@ -34,106 +64,25 @@ class Scene2 extends Phaser.Scene {
       item.setCollideWorldBounds(true);
       item.setBounce(1);
     }
-
-    this.player1 = this.physics.add.sprite(config.width / 2 - 100, config.height / 2, "player1");
-    this.player1.setSize(38,50);
-    this.player1.setCollideWorldBounds(true);
-
-
-    this.player2 = this.physics.add.sprite(config.width / 2 + 100, config.height / 2, "player2");
-    this.player2.setSize(38,50);
-    this.player2.setCollideWorldBounds(true);
-
+    // 충돌 설정.
     this.physics.add.collider(this.platforms, this.items);
+  
+    this.physics.add.collider(this.player1.sprite, this.platforms);
+    this.physics.add.collider(this.player2.sprite, this.platforms);
 
-    this.physics.add.collider(this.player1, this.platforms);
-    this.physics.add.collider(this.player2, this.platforms);
-
-    this.physics.add.collider(this.player1, this.items, this.P1inventoryManager);
-    this.physics.add.collider(this.player2, this.items, this.P2inventoryManager);
-
-    this.cursorKeys = this.input.keyboard.createCursorKeys();
-    this.KeyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-    this.KeyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-    this.KeyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-    this.KeyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+    this.physics.add.collider(this.player1.sprite, this.items, this.player1.plusInvItem.bind(this.player1));
+    this.physics.add.collider(this.player2.sprite, this.items, this.player2.plusInvItem.bind(this.player2));
 
   }
   update() {
-    this.movePlayer1Manager();
-    this.movePlayer2Manager();
-  }
-
-  movePlayer1Manager() {
+    this.player1.moveManager(this.cursorKeys.up,this.cursorKeys.down,
+      this.cursorKeys.left,this.cursorKeys.right);
+    this.player2.moveManager(this.keyW,this.keyS,this.keyA,this.keyD);
     
-
-    this.player1.setVelocity(0);
-    
-    
-    if (this.cursorKeys.left.isDown) {
-      this.player1.setVelocityX(-gameSettings.playerSpeed);
-      this.player1.play("p1_left_anim", true);
-    }
-    else if (this.cursorKeys.right.isDown) {
-      this.player1.setVelocityX(gameSettings.playerSpeed);
-      this.player1.play("p1_right_anim", true);
+    this.player1InventoryDisplay.setText("Player1 Inventory Count  \n" + this.player1.invCount);
+    this.player2InventoryDisplay.setText("Player2 Inventory Count  \n" + this.player2.invCount);
     }
 
-
-    if (this.cursorKeys.down.isDown) {
-      this.player1.setVelocityY(gameSettings.playerSpeed);
-      this.player1.play("p1_down_anim", true);
-    }
-    else if (this.cursorKeys.up.isDown) {
-      this.player1.setVelocityY(-gameSettings.playerSpeed);
-      this.player1.play("p1_up_anim", true);
-    }
-
-   
-    /*else {
-    this.player1.play("p1_turn_anim", true);
-   }*/
-
-    /*if (this.spacebar.isDown && this.player1.body.touching.down) {
-      this.player1.setVelocityY(-300);     
-      console.log("jump");
-    }*/
-
-  }
-
-  movePlayer2Manager() {
-    this.player2.setVelocity(0);
-
-    if (this.KeyA.isDown) {
-      this.player2.setVelocityX(-gameSettings.playerSpeed);
-      this.player2.play("p2_left_anim", true);
-    }
-    else if (this.KeyD.isDown) {
-      this.player2.setVelocityX(gameSettings.playerSpeed);
-      this.player2.play("p2_right_anim", true);
-    }
-    if (this.KeyS.isDown) {
-      this.player2.setVelocityY(gameSettings.playerSpeed);
-      this.player2.play("p2_down_anim", true);
-    }
-    else if (this.KeyW.isDown) {
-      this.player2.setVelocityY(-gameSettings.playerSpeed);
-      this.player2.play("p2_up_anim", true);
-    }
-    /*{
-      this.player2.play("p2_turn_anim", true);
-    }*/
-  }
-
-  P1inventoryManager(player, item) {
-    item.setPosition(10, 100);
-    item.setVelocity(0);
-  }
-
-  P2inventoryManager(player, item) {
-    item.setPosition(1270, 100);
-    item.setVelocity(0);
-  }
 }
 
 /*

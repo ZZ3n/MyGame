@@ -29,7 +29,6 @@ class Scene1 extends Phaser.Scene {
     this.add.text(20, 20, "Loading game..."); // 텍스트를 화면에 띄움.
     this.scene.start("playGame");
 
-   
     this.anims.create({
       key: "p1_left_anim",
       frames: this.anims.generateFrameNumbers("player1", {
@@ -126,10 +125,6 @@ class Scene1 extends Phaser.Scene {
     })
     
     //#########################
-
-  
-
-    
 
     this.anims.create({
       key: "anim_pink",
