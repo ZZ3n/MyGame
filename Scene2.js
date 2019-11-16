@@ -36,9 +36,12 @@ class Scene2 extends Phaser.Scene {
     }
 
     this.player1 = this.physics.add.sprite(config.width / 2 - 100, config.height / 2, "player1");
+    this.player1.setSize(38,50);
     this.player1.setCollideWorldBounds(true);
 
+
     this.player2 = this.physics.add.sprite(config.width / 2 + 100, config.height / 2, "player2");
+    this.player2.setSize(38,50);
     this.player2.setCollideWorldBounds(true);
 
     this.physics.add.collider(this.platforms, this.items);
@@ -75,6 +78,8 @@ class Scene2 extends Phaser.Scene {
       this.player1.setVelocityX(gameSettings.playerSpeed);
       this.player1.play("p1_right_anim", true);
     }
+
+
     if (this.cursorKeys.down.isDown) {
       this.player1.setVelocityY(gameSettings.playerSpeed);
       this.player1.play("p1_down_anim", true);
@@ -83,6 +88,8 @@ class Scene2 extends Phaser.Scene {
       this.player1.setVelocityY(-gameSettings.playerSpeed);
       this.player1.play("p1_up_anim", true);
     }
+
+   
     /*else {
     this.player1.play("p1_turn_anim", true);
    }*/
