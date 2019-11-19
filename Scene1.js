@@ -5,6 +5,7 @@ class Scene1 extends Phaser.Scene {
 
   preload() {
     this.load.image("background","assets/images/dessert.png")
+    this.load.image("speedup","assets/images/SpeedUp.png")
     this.load.image("block1", "assets/images/block1.png")
     this.load.image("block2", "assets/images/block2.png")
     this.load.image("dol", "assets/images/dol.png")

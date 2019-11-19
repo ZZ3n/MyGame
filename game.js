@@ -14,7 +14,7 @@ var config = {
 }
 
 var gameSettings = {
-  playerSpeed: 300,
+  playerSpeed: 200,
   playerFramerate : 10
 }
 

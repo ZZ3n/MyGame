@@ -8,6 +8,7 @@ class Player {
     this.sprite.setCollideWorldBounds(true);
     this.invPosition = 0;
     this.invItems = scene.physics.add.group();
+    this.speed =  gameSettings.playerSpeed;
   }
 
   plusInvItem(playerSprite, item) {
@@ -34,21 +35,26 @@ class Player {
     this.sprite.setVelocity(0);
 
     if (left.isDown) {
-      this.sprite.setVelocityX(-gameSettings.playerSpeed);
+      this.sprite.setVelocityX(-this.speed);
       this.sprite.play(this.name + "_left_anim", true);
     }
     else if (right.isDown) {
-      this.sprite.setVelocityX(gameSettings.playerSpeed);
+      this.sprite.setVelocityX(this.speed);
       this.sprite.play(this.name + "_right_anim", true);
     }
 
     if (down.isDown) {
-      this.sprite.setVelocityY(gameSettings.playerSpeed);
+      this.sprite.setVelocityY(this.speed);
       this.sprite.play(this.name + "_down_anim", true);
     }
     else if (up.isDown) {
-      this.sprite.setVelocityY(-gameSettings.playerSpeed);
+      this.sprite.setVelocityY(-this.speed);
       this.sprite.play(this.name + "_up_anim", true);
     }
+  }
+
+  plusSpeedUp(playerSprite,speedup) {
+    this.speed += 50;
+    speedup.destroy();
   }
 }

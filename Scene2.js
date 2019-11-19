@@ -29,7 +29,7 @@ class Scene2 extends Phaser.Scene {
     // # 2 인게임 오브젝트 생성.
 
     this.items = this.physics.add.group();
-
+    this.speedups = this.physics.add.group();
     this.player1 = new Player(this, config.width / 2 - 100, config.height / 2, "player1", "p1");
 
     this.player2 = new Player(this, config.width / 2 + 100, config.height / 2, "player2", "p2");
@@ -47,17 +47,6 @@ class Scene2 extends Phaser.Scene {
 
   create() {
 
-    this.player1InventoryDisplay = this.add.text(20, 100, "Player1 Inventory Count  \n" + this.player1.invCount, {
-      font: "20px Arial",
-      fill: "black"
-    });
-
-    this.player2InventoryDisplay = this.add.text(1050, 100, "Player2 Inventory Count  \n" + this.player2.invCount, {
-      font: "20px Arial",
-      fill: "black"
-    });
-
-
     var maxObjects = 20;
 
     for (var i = 0; i <= maxObjects; i++) {
@@ -74,6 +63,27 @@ class Scene2 extends Phaser.Scene {
       item.setCollideWorldBounds(true);
       item.setBounce(1);
     }
+
+    var speedUpCount = 5;
+
+    for (var i = 0; i <= speedUpCount; i++) {
+      var item = this.physics.add.sprite(32, 32, "speedup");
+      this.speedups.add(item);
+      item.setRandomPosition(0, 0, game.config.width, game.config.height);
+      item.setVelocity(0);
+      item.setCollideWorldBounds(true);
+      item.setBounce(1);
+    }
+
+    this.player1InventoryDisplay = this.add.text(20, 100, "Player1 Inventory Count  \n" + this.player1.invCount, {
+      font: "20px Arial",
+      fill: "black"
+    });
+
+    this.player2InventoryDisplay = this.add.text(1050, 100, "Player2 Inventory Count  \n" + this.player2.invCount, {
+      font: "20px Arial",
+      fill: "black"
+    });
     // 충돌 설정.
 
     this.physics.add.collider(this.platforms, this.items);
@@ -84,6 +94,8 @@ class Scene2 extends Phaser.Scene {
     this.physics.add.collider(this.player1.sprite, this.items, this.player1.plusInvItem.bind(this.player1));
     this.physics.add.collider(this.player2.sprite, this.items, this.player2.plusInvItem.bind(this.player2));
 
+    this.physics.add.collider(this.player1.sprite, this.speedups, this.player1.plusSpeedUp.bind(this.player1));
+    this.physics.add.collider(this.player2.sprite, this.speedups, this.player2.plusSpeedUp.bind(this.player2));
     //this.physics.add.collider(this.player1.sprite, this.player2.invItems,this.player1.itemStealed);
     //this.physics.add.collider(this.player2.sprite, this.player1.invItems,this.player2.itemStealed);
   }
