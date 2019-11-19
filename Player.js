@@ -9,13 +9,16 @@ class Player {
     this.invPosition = 0;
     this.invItems = scene.physics.add.group();
     this.speed =  gameSettings.playerSpeed;
+    this.itemMax = 20;
   }
 
   plusInvItem(playerSprite, item) {
+    if (this.invItems.getLength() < this.itemMax) {
     this.scene.items.remove(item);
     //item.removeAllListeners();
     this.invItems.add(item);
     this.invManager();
+    }
   }
 
   invManager() {

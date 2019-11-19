@@ -47,7 +47,7 @@ class Scene2 extends Phaser.Scene {
 
   create() {
 
-    var maxObjects = 20;
+    var maxObjects = 50;
 
     for (var i = 0; i <= maxObjects; i++) {
       var item = this.physics.add.sprite(32, 32, "item_pink");
@@ -75,13 +75,13 @@ class Scene2 extends Phaser.Scene {
       item.setBounce(1);
     }
 
-    this.player1InventoryDisplay = this.add.text(20, 100, "Player1 Inventory Count  \n" + this.player1.invCount, {
-      font: "20px Arial",
+    this.player1InventoryDisplay = this.add.text(20, 100, "" + this.player1.invItems.getLength() + '/' + this.player1.itemMax, {
+      font: "25px Arial",
       fill: "black"
     });
 
-    this.player2InventoryDisplay = this.add.text(1050, 100, "Player2 Inventory Count  \n" + this.player2.invCount, {
-      font: "20px Arial",
+    this.player2InventoryDisplay = this.add.text(1000, 100, "" + this.player2.invItems.getLength() + '/' + this.player2.itemMax, {
+      font: "25px Arial",
       fill: "black"
     });
     // 충돌 설정.
@@ -104,8 +104,10 @@ class Scene2 extends Phaser.Scene {
       this.cursorKeys.left, this.cursorKeys.right);
     this.player2.moveManager(this.keyW, this.keyS, this.keyA, this.keyD);
 
-    this.player1InventoryDisplay.setText("Player1 Inventory Count  \n" + this.player1.invItems.getLength());
-    this.player2InventoryDisplay.setText("Player2 Inventory Count  \n" + this.player2.invItems.getLength());
+    this.player1InventoryDisplay.setText("" + this.player1.invItems.getLength() + '/' + this.player1.itemMax);
+    this.player2InventoryDisplay.setText("" + this.player2.invItems.getLength() + '/' + this.player2.itemMax);
+    this.player1InventoryDisplay.setPosition(this.player1.sprite.x + 20,this.player1.sprite.y);
+    this.player2InventoryDisplay.setPosition(this.player2.sprite.x + 20,this.player2.sprite.y);
     this.player1.invManager();
     this.player2.invManager();
   }

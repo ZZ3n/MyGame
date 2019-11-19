@@ -14,6 +14,7 @@ var config = {
 }
 
 var gameSettings = {
+  blockSize : 32,
   playerSpeed: 200,
   playerFramerate : 10
 }
