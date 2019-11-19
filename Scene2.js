@@ -9,9 +9,18 @@ class Scene2 extends Phaser.Scene {
     this.background.setOrigin(0, 0);
 
     this.platforms = this.physics.add.staticGroup();
-    this.platforms.create(config.width / 2, config.height, 'grass').setScale(25, 3).refreshBody();
-    this.platforms.create(config.width / 2, config.height * 2 / 3, 'grass').setScale(4, 0.5).refreshBody();
-
+    this.platforms.create(gameSettings.blockSize * 6, config.height * 2 / 4, 'block1');
+    this.platforms.create(config.width / 2, config.height / 2, 'block2');
+    this.platforms.create(config.width * 3 / 8, config.height * 2 / 8, 'block1');
+    this.platforms.create(config.width * 6 / 7, config.height * 1 / 4, 'block2');
+    this.platforms.create(config.width * 1 / 8, config.height * 5 / 5, 'block1');
+    this.platforms.create(config.width * 2 / 3, config.height * 8 / 10, 'block2');
+    this.platforms.create(592, 345, 'dol');
+    this.platforms.create(875, 560, 'dol');
+    this.platforms.create(100, 372, 'pull1');
+    this.platforms.create(592, 345, 'pull2');
+    this.platforms.create(720, 800, 'suninjang');
+    this.platforms.create(528, 8700, 'suninjang');
     this.add.text(20, 20, "Playing game", {
       font: "10px Arial",
       fill: "yellow"
@@ -22,8 +31,10 @@ class Scene2 extends Phaser.Scene {
     this.items = this.physics.add.group();
 
     this.player1 = new Player(this, config.width / 2 - 100, config.height / 2, "player1", "p1");
+
     this.player2 = new Player(this, config.width / 2 + 100, config.height / 2, "player2", "p2");
-    this.player1.invCount = 0;
+    this.player2.invPosition = config.width / 2 + 10;
+
     // # 3 키 바인딩
 
     this.cursorKeys = this.input.keyboard.createCursorKeys();
@@ -47,41 +58,45 @@ class Scene2 extends Phaser.Scene {
     });
 
 
-    var maxObjects = 10;
+    var maxObjects = 20;
 
     for (var i = 0; i <= maxObjects; i++) {
       var item = this.physics.add.sprite(32, 32, "item_pink");
       this.items.add(item);
       item.setRandomPosition(0, 0, game.config.width, game.config.height);
-
       if (Math.random() > 0.5) {
         item.play("anim_pink");
       }
       else {
         item.play("anim_green");
       }
-      item.setVelocity(100 * (Math.random()-0.5) * 5, 100 * (Math.random()-0.5) * 5);
+      item.setVelocity(100 * (Math.random() - 0.5) * 5, 100 * (Math.random() - 0.5) * 5);
       item.setCollideWorldBounds(true);
       item.setBounce(1);
     }
     // 충돌 설정.
+
     this.physics.add.collider(this.platforms, this.items);
-  
+
     this.physics.add.collider(this.player1.sprite, this.platforms);
     this.physics.add.collider(this.player2.sprite, this.platforms);
 
     this.physics.add.collider(this.player1.sprite, this.items, this.player1.plusInvItem.bind(this.player1));
     this.physics.add.collider(this.player2.sprite, this.items, this.player2.plusInvItem.bind(this.player2));
 
+    //this.physics.add.collider(this.player1.sprite, this.player2.invItems,this.player1.itemStealed);
+    //this.physics.add.collider(this.player2.sprite, this.player1.invItems,this.player2.itemStealed);
   }
   update() {
-    this.player1.moveManager(this.cursorKeys.up,this.cursorKeys.down,
-      this.cursorKeys.left,this.cursorKeys.right);
-    this.player2.moveManager(this.keyW,this.keyS,this.keyA,this.keyD);
-    
-    this.player1InventoryDisplay.setText("Player1 Inventory Count  \n" + this.player1.invCount);
-    this.player2InventoryDisplay.setText("Player2 Inventory Count  \n" + this.player2.invCount);
-    }
+    this.player1.moveManager(this.cursorKeys.up, this.cursorKeys.down,
+      this.cursorKeys.left, this.cursorKeys.right);
+    this.player2.moveManager(this.keyW, this.keyS, this.keyA, this.keyD);
+
+    this.player1InventoryDisplay.setText("Player1 Inventory Count  \n" + this.player1.invItems.getLength());
+    this.player2InventoryDisplay.setText("Player2 Inventory Count  \n" + this.player2.invItems.getLength());
+    this.player1.invManager();
+    this.player2.invManager();
+  }
 
 }
 

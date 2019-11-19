@@ -4,8 +4,13 @@ class Scene1 extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("background", "assets/images/background.jpg");
-    this.load.image("grass", "assets/images/grass.png") // 80 x 40
+    this.load.image("background","assets/images/dessert.png")
+    this.load.image("block1", "assets/images/block1.png")
+    this.load.image("block2", "assets/images/block2.png")
+    this.load.image("dol", "assets/images/dol.png")
+    this.load.image("pull1", "assets/images/pull1.png")
+    this.load.image("pull2", "assets/images/pull2.png")
+    this.load.image("suninjang", "assets/images/suninjang.png")
     this.load.spritesheet("player1", "assets/spritesheets/P1.png", {
       frameWidth: 64,
       frameHeight: 64

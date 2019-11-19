@@ -1,7 +1,7 @@
 
 var config = {
   width: 1280,
-  height: 768,
+  height: 960,
   backgroundColor: 0x000000,
   scene: [Scene1, Scene2], // 씬 이름 배열로 저장하는거. 중요!
   pixelArt: true,
@@ -14,7 +14,7 @@ var config = {
 }
 
 var gameSettings = {
-  playerSpeed: 200,
+  playerSpeed: 300,
   playerFramerate : 10
 }
 
