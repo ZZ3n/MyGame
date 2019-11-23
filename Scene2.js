@@ -47,7 +47,7 @@ class Scene2 extends Phaser.Scene {
 
   create() {
 
-    var maxObjects = 50;
+    var maxObjects = 30;
 
     for (var i = 0; i <= maxObjects; i++) {
       var item = this.physics.add.sprite(32, 32, "item_pink");
@@ -59,7 +59,7 @@ class Scene2 extends Phaser.Scene {
       else {
         item.play("anim_green");
       }
-      item.setVelocity(100 * (Math.random() - 0.5) * 5, 100 * (Math.random() - 0.5) * 5);
+      //item.setVelocity(100 * (Math.random() - 0.5) * 5, 100 * (Math.random() - 0.5) * 5);
       item.setCollideWorldBounds(true);
       item.setBounce(1);
     }
@@ -96,8 +96,8 @@ class Scene2 extends Phaser.Scene {
 
     this.physics.add.collider(this.player1.sprite, this.speedups, this.player1.plusSpeedUp.bind(this.player1));
     this.physics.add.collider(this.player2.sprite, this.speedups, this.player2.plusSpeedUp.bind(this.player2));
-    //this.physics.add.collider(this.player1.sprite, this.player2.invItems,this.player1.itemStealed);
-    //this.physics.add.collider(this.player2.sprite, this.player1.invItems,this.player2.itemStealed);
+    this.physics.add.collider(this.player1.sprite, this.player2.invItems,this.player2.itemPopUp.bind(this.player2));
+    this.physics.add.collider(this.player2.sprite, this.player1.invItems,this.player1.itemPopUp.bind(this.player1));
   }
   update() {
     this.player1.moveManager(this.cursorKeys.up, this.cursorKeys.down,
@@ -119,6 +119,5 @@ class Scene2 extends Phaser.Scene {
 현재 남겨진 문제.
 #1 좌우 방향키와 위아래 키를 같이 누르면 애니메이션이 멈추는 현상.
 #2 방향키를 한번 누르면 애니메이션이 계속 재생되는 현상 => isUP으로 해결 가능성 보임.
-#3 inventory 구현
 */
 

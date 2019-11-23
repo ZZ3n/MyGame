@@ -15,6 +15,7 @@ class Player {
   plusInvItem(playerSprite, item) {
     if (this.invItems.getLength() < this.itemMax) {
     this.scene.items.remove(item);
+    item.setSize(10,10);
     //item.removeAllListeners();
     this.invItems.add(item);
     this.invManager();
@@ -60,4 +61,22 @@ class Player {
     this.speed += 50;
     speedup.destroy();
   }
+
+  itemPopUp(playerSprite,item) { // p1 items * p2 sprite => call p1
+    var flag = true;
+    for (var k = 0; k < this.invItems.getLength() ;k++) {
+      var pItem = this.invItems.getLastNth(k,true);
+      if (pItem == item) {
+        console.log("!");
+        break;
+      }
+      this.invItems.remove(pItem);
+      this.scene.items.add(pItem);
+      pItem.setRandomPosition(0, 0, game.config.width, game.config.height);
+    }
+   // this.invManager();
+  }
+
+
+
 }
