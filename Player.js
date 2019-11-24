@@ -10,27 +10,31 @@ class Player {
     this.invItems = scene.physics.add.group();
     this.speed =  gameSettings.playerSpeed;
     this.itemMax = 20;
+    this.invCollider;
+    this.invItems.removeCallback = this.itemRemoveCallback.bind(this);
   }
 
   plusInvItem(playerSprite, item) {
     if (this.invItems.getLength() < this.itemMax) {
-    this.scene.items.remove(item);
+    this.scene.items.remove(item)
+    item.name = "" + this.invItems.getLength();
     item.setSize(10,10);
     //item.removeAllListeners();
     this.invItems.add(item);
-    this.invManager();
+    
     }
   }
 
   invManager() {
-    var preX = this.sprite.x;
-    var preY = this.sprite.y;
-    for (var n = 0; n < this.invItems.getLength(); n++) {
-      var temp = this.invItems.getFirstNth(n, true);
-      //temp.setVelocity(0);
-      temp.setVelocity((preX-temp.x)*10,(preY-temp.y)*10);
-      preX = temp.x;
-      preY = temp.y;
+    if (this.invCollider.active == true) {
+      var preX = this.sprite.x;
+      var preY = this.sprite.y;
+      for (var n = 1; n <= this.invItems.getLength(); n++) {
+        var temp = this.invItems.getLastNth(n, true);
+        temp.setVelocity((preX - temp.x) * 3, (preY - temp.y) * 3);
+        preX = temp.x;
+        preY = temp.y;
+      }
     }
   }
 
@@ -63,20 +67,32 @@ class Player {
   }
 
   itemPopUp(playerSprite,item) { // p1 items * p2 sprite => call p1
-    var flag = true;
-    for (var k = 0; k < this.invItems.getLength() ;k++) {
-      var pItem = this.invItems.getLastNth(k,true);
-      if (pItem == item) {
-        console.log("!");
-        break;
+    
+    this.invCollider.active = false;
+   // console.log(this.invCollider)
+    for (var k = 1; k <= this.invItems.getLength(); k++) {
+      var pItem = this.invItems.getFirstNth(k, true);
+      if (item == pItem) {
+       // pItem.setRandomPosition(0, 0, game.config.width, game.config.height);
+        this.invItems.remove(pItem);
+        this.scene.items.add(pItem);
+        if (!this.invItems.contains(item)) {
+          break;
+        }
       }
-      this.invItems.remove(pItem);
-      this.scene.items.add(pItem);
-      pItem.setRandomPosition(0, 0, game.config.width, game.config.height);
     }
-   // this.invManager();
+    this.invCollider.active = true;
+  
   }
 
+  itemRemoveCallback(item) {
+    console.log("removed!");
+    var toX = Math.random() * game.config.width;
+    var toY = Math.random() * game.config.height;
+    
+    
+    item.setPosition(toX,toY);
+    }
 
 
 }

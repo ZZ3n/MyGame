@@ -96,8 +96,9 @@ class Scene2 extends Phaser.Scene {
 
     this.physics.add.collider(this.player1.sprite, this.speedups, this.player1.plusSpeedUp.bind(this.player1));
     this.physics.add.collider(this.player2.sprite, this.speedups, this.player2.plusSpeedUp.bind(this.player2));
-    this.physics.add.collider(this.player1.sprite, this.player2.invItems,this.player2.itemPopUp.bind(this.player2));
-    this.physics.add.collider(this.player2.sprite, this.player1.invItems,this.player1.itemPopUp.bind(this.player1));
+
+    this.player2.invCollider = this.physics.add.collider(this.player1.sprite, this.player2.invItems,this.player2.itemPopUp.bind(this.player2));
+    this.player1.invCollider = this.physics.add.collider(this.player2.sprite, this.player1.invItems,this.player1.itemPopUp.bind(this.player1));
   }
   update() {
     this.player1.moveManager(this.cursorKeys.up, this.cursorKeys.down,
