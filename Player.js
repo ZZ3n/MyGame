@@ -1,3 +1,5 @@
+/** @type {import ("../typings/phaser")}*/
+
 class Player {
 
   constructor(scene, x, y, spriteName, name) {
@@ -6,9 +8,8 @@ class Player {
     this.sprite = scene.physics.add.sprite(x, y, spriteName);
     this.sprite.setSize(38, 50);
     this.sprite.setCollideWorldBounds(true);
-    this.invPosition = 0;
     this.invItems = scene.physics.add.group();
-    this.speed =  gameSettings.playerSpeed;
+    this.speed = gameSettings.playerSpeed;
     this.itemMax = 20;
     this.invCollider;
     this.invItems.removeCallback = this.itemRemoveCallback.bind(this);
@@ -16,12 +17,12 @@ class Player {
 
   plusInvItem(playerSprite, item) {
     if (this.invItems.getLength() < this.itemMax) {
-    this.scene.items.remove(item)
-    item.name = "" + this.invItems.getLength();
-    item.setSize(10,10);
-    //item.removeAllListeners();
-    this.invItems.add(item);
-    
+      this.scene.items.remove(item);
+      item.name = "" + this.invItems.getLength();
+      item.setSize(10, 10);
+      //item.removeAllListeners();
+      this.invItems.add(item);
+
     }
   }
 
@@ -31,7 +32,7 @@ class Player {
       var preY = this.sprite.y;
       for (var n = 1; n <= this.invItems.getLength(); n++) {
         var temp = this.invItems.getLastNth(n, true);
-        temp.setVelocity((preX - temp.x) * 3, (preY - temp.y) * 3);
+        temp.setVelocity((preX - temp.x) * 6, (preY - temp.y) * 6);
         preX = temp.x;
         preY = temp.y;
       }
@@ -45,8 +46,7 @@ class Player {
     if (left.isDown) {
       this.sprite.setVelocityX(-this.speed);
       this.sprite.play(this.name + "_left_anim", true);
-    }
-    else if (right.isDown) {
+    } else if (right.isDown) {
       this.sprite.setVelocityX(this.speed);
       this.sprite.play(this.name + "_right_anim", true);
     }
@@ -54,45 +54,58 @@ class Player {
     if (down.isDown) {
       this.sprite.setVelocityY(this.speed);
       this.sprite.play(this.name + "_down_anim", true);
-    }
-    else if (up.isDown) {
+    } else if (up.isDown) {
       this.sprite.setVelocityY(-this.speed);
       this.sprite.play(this.name + "_up_anim", true);
     }
   }
 
-  plusSpeedUp(playerSprite,speedup) {
-    this.speed += 50;
+  plusSpeedUp(playerSprite, speedup) {
+    this.speed += 20;
     speedup.destroy();
   }
 
-  itemPopUp(playerSprite,item) { // p1 items * p2 sprite => call p1
-    
+  itemPopUp(playerSprite, item) { // p1 items * p2 sprite => call p1
     this.invCollider.active = false;
-   // console.log(this.invCollider)
+    // console.log(this.invCollider)
     for (var k = 1; k <= this.invItems.getLength(); k++) {
       var pItem = this.invItems.getFirstNth(k, true);
       if (item == pItem) {
-       // pItem.setRandomPosition(0, 0, game.config.width, game.config.height);
+        // pItem.setRandomPosition(0, 0, game.config.width, game.config.height);
         this.invItems.remove(pItem);
-        this.scene.items.add(pItem);
+        
         if (!this.invItems.contains(item)) {
           break;
         }
       }
     }
     this.invCollider.active = true;
-  
+
   }
 
   itemRemoveCallback(item) {
-    console.log("removed!");
+    
     var toX = Math.random() * game.config.width;
     var toY = Math.random() * game.config.height;
-    
-    
-    item.setPosition(toX,toY);
-    }
-
+    var delX = toX - item.x;
+    var delY = toY - item.y;
+    var sec = 1;
+    item.setVelocity(delX / sec,delY / sec);
+    item.setAngularVelocity(1000);
+    this.scene.time.delayedCall( 1000 * sec,this.setTo.bind(this),[item,toX,toY]);
+  }
+  setTo(item,toX,toY) {
+    item.setVelocity(0);
+    item.setRotation(0);
+    item.setPosition(toX, toY);
+    this.scene.items.add(item);
+  }
 
 }
+/*
+var angle = (toY - item.y) / (toX - item.x);
+    angle = Math.atan(angle);
+    var dist = Math.sqrt((toX - item.x) * (toX - item.x) + (toY - item.y) * (toY - item.y));
+    var velX = Math.cos(angle) * (dist * 2);
+    var velY = Math.sin(angle) * (dist * 2);
+    */

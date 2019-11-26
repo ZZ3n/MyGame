@@ -1,3 +1,5 @@
+/** @type {import ("../typings/phaser")}*/
+
 class Map {
     constructor(scene,mapName) {
         // 스프라이트 만들기.

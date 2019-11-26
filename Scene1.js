@@ -1,17 +1,18 @@
+/** @type {import ("../typings/phaser")}*/
+
 class Scene1 extends Phaser.Scene {
   constructor() {
     super("bootGame");
   }
-
   preload() {
-    this.load.image("background","assets/images/dessert.png")
-    this.load.image("speedup","assets/images/SpeedUp.png")
-    this.load.image("block1", "assets/images/block1.png")
-    this.load.image("block2", "assets/images/block2.png")
-    this.load.image("dol", "assets/images/dol.png")
-    this.load.image("pull1", "assets/images/pull1.png")
-    this.load.image("pull2", "assets/images/pull2.png")
-    this.load.image("suninjang", "assets/images/suninjang.png")
+    this.load.image("background", "assets/images/dessert.png");
+    this.load.image("speedup", "assets/images/SpeedUp.png");
+    this.load.image("block1", "assets/images/block1.png");
+    this.load.image("block2", "assets/images/block2.png");
+    this.load.image("dol", "assets/images/dol.png");
+    this.load.image("pull1", "assets/images/pull1.png");
+    this.load.image("pull2", "assets/images/pull2.png");
+    this.load.image("suninjang", "assets/images/suninjang.png");
     this.load.spritesheet("player1", "assets/spritesheets/P1.png", {
       frameWidth: 64,
       frameHeight: 64
@@ -54,11 +55,11 @@ class Scene1 extends Phaser.Scene {
       frameRate: gameSettings.playerFramerate,
       repeat: 1
     });
-
+    
     this.anims.create({
       key: "p1_up_anim",
       frames: this.anims.generateFrameNumbers("player1", {
-        start:12,
+        start: 12,
         end: 15
       }),
       frameRate: gameSettings.playerFramerate,
@@ -77,9 +78,12 @@ class Scene1 extends Phaser.Scene {
 
     this.anims.create({
       key: "p1_turn_anim",
-      frames: [{ key: "player1", frame: 0 }],
+      frames: [{
+        key: "player1",
+        frame: 0
+      }],
       frameRate: 20
-    })
+    });
 
     //#####################
 
@@ -106,7 +110,7 @@ class Scene1 extends Phaser.Scene {
     this.anims.create({
       key: "p2_up_anim",
       frames: this.anims.generateFrameNumbers("player2", {
-        start:12,
+        start: 12,
         end: 15
       }),
       frameRate: gameSettings.playerFramerate,
@@ -123,13 +127,16 @@ class Scene1 extends Phaser.Scene {
       repeat: 1
     });
 
-    
+
     this.anims.create({
       key: "p2_turn_anim",
-      frames: [{ key: "player2", frame: 0 }],
+      frames: [{
+        key: "player2",
+        frame: 0
+      }],
       frameRate: 20
     })
-    
+
     //#########################
 
     this.anims.create({

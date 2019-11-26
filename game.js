@@ -1,3 +1,4 @@
+/** @type {import ("../typings/phaser")}*/
 
 var config = {
   width: 1280,
@@ -11,12 +12,12 @@ var config = {
       debug: false
     }
   }
-}
+};
 
 var gameSettings = {
   blockSize : 32,
   playerSpeed: 200,
   playerFramerate : 10
-}
+};
 
-var game = new Phaser.Game(config)
+var game = new Phaser.Game(config);
