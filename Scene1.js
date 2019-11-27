@@ -18,6 +18,10 @@ class Scene1 extends Phaser.Scene {
       frameHeight: 64
     }); // 모두 소문자임에 주의!
 
+    this.load.spritesheet("tornado", "assets/spritesheets/tornado.png", {
+      frameWidth: 48,
+      frameHeight: 48
+    }); // 모두 소문자임에 주의!
     this.load.spritesheet("player2", "assets/spritesheets/P2.png", {
       frameWidth: 64,
       frameHeight: 64
@@ -55,7 +59,7 @@ class Scene1 extends Phaser.Scene {
       frameRate: gameSettings.playerFramerate,
       repeat: 1
     });
-    
+
     this.anims.create({
       key: "p1_up_anim",
       frames: this.anims.generateFrameNumbers("player1", {
@@ -152,6 +156,15 @@ class Scene1 extends Phaser.Scene {
       frameRate: 20,
       repeat: -1
     });
+
+    //##########################
+    this.anims.create({
+      key: "anim_tornado",
+      frames: this.anims.generateFrameNumbers("tornado"),
+      frameRate: gameSettings.playerFramerate,
+      repeat: -1
+    });
+
   }
 
 

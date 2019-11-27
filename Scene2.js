@@ -32,9 +32,12 @@ class Scene2 extends Phaser.Scene {
     this.items = this.physics.add.group();
     this.speedups = this.physics.add.group();
     // # 2-2 플레이어 객체 생성.
-    this.player1 = new Player(this, config.width / 2 - 100, config.height / 2, "player1", "p1");
-    this.player2 = new Player(this, config.width / 2 + 100, config.height / 2, "player2", "p2");
-
+    this.player1 = new Player(this, config.width / 2 - 100, config.height / 2 - 100, "player1", "p1");
+    this.player2 = new Player(this, config.width / 2 + 100, config.height / 2 - 100, "player2", "p2");
+    this.tornado = new Player(this, config.width / 2, config.height / 4, "tornado","tornado");
+    //tornado constructor
+    this.tornado.sprite.play("anim_tornado", true);
+    this.tornado.sprite.setScale(2,2);
     // # 3 키 바인딩
 
     this.cursorKeys = this.input.keyboard.createCursorKeys();
@@ -47,15 +50,15 @@ class Scene2 extends Phaser.Scene {
   create() {
 
     var maxObjects = 15;
-    
+
     for (var i = 0; i <= maxObjects; i++) {
       this.plusItemInScene();
     }
-    this.timedItemEvent = this.time.addEvent( {
-      delay : 200,
-      callbackScope : this,
-      callback : this.plusItemInScene,
-      loop : true
+    this.timedItemEvent = this.time.addEvent({
+      delay: 200,
+      callbackScope: this,
+      callback: this.plusItemInScene,
+      loop: true
       //startAt : 1000
     });
     var speedUpCount = 10;
@@ -84,6 +87,7 @@ class Scene2 extends Phaser.Scene {
 
     this.physics.add.collider(this.player1.sprite, this.platforms);
     this.physics.add.collider(this.player2.sprite, this.platforms);
+    this.physics.add.collider(this.tornado.sprite,this.platforms);
 
     this.physics.add.collider(this.player1.sprite, this.items, this.player1.plusInvItem.bind(this.player1));
     this.physics.add.collider(this.player2.sprite, this.items, this.player2.plusInvItem.bind(this.player2));
@@ -93,6 +97,12 @@ class Scene2 extends Phaser.Scene {
 
     this.player2.invCollider = this.physics.add.collider(this.player1.sprite, this.player2.invItems, this.player2.itemPopUp.bind(this.player2));
     this.player1.invCollider = this.physics.add.collider(this.player2.sprite, this.player1.invItems, this.player1.itemPopUp.bind(this.player1));
+    this.tornado.invCollider = this.physics.add.collider(this.tornado.sprite, this.player1.invItems, this.player1.itemPopUp.bind(this.player1));
+    this.tornado.invCollider = this.physics.add.collider(this.tornado.sprite, this.player2.invItems, this.player2.itemPopUp.bind(this.player2));
+
+    this.tornado.sprite.setBounce(1);
+    this.tornado.sprite.setCollideWorldBounds(true);
+    this.tornado.sprite.setVelocity(100,100);
   }
   update() {
     this.player1.moveManager(this.cursorKeys.up, this.cursorKeys.down,
@@ -107,8 +117,7 @@ class Scene2 extends Phaser.Scene {
     //console.log(this.items.getLength());
     if (this.items.getLength() >= 30) {
       this.timedItemEvent.paused = true;
-    }
-    else {
+    } else {
       this.timedItemEvent.paused = false;
     }
   }
@@ -122,9 +131,8 @@ class Scene2 extends Phaser.Scene {
     } else {
       item.play("anim_green");
     }
-    //item.setVelocity(100 * (Math.random() - 0.5) * 5, 100 * (Math.random() - 0.5) * 5);
     item.setCollideWorldBounds(true);
-    //item.setBounce(1);
+    
   }
 }
 

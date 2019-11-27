@@ -73,7 +73,7 @@ class Player {
       if (item == pItem) {
         // pItem.setRandomPosition(0, 0, game.config.width, game.config.height);
         this.invItems.remove(pItem);
-        
+
         if (!this.invItems.contains(item)) {
           break;
         }
@@ -84,17 +84,16 @@ class Player {
   }
 
   itemRemoveCallback(item) {
-    
     var toX = Math.random() * game.config.width;
     var toY = Math.random() * game.config.height;
     var delX = toX - item.x;
     var delY = toY - item.y;
     var sec = 1;
-    item.setVelocity(delX / sec,delY / sec);
+    item.setVelocity(delX / sec, delY / sec);
     item.setAngularVelocity(1000);
-    this.scene.time.delayedCall( 1000 * sec,this.setTo.bind(this),[item,toX,toY]);
+    this.scene.time.delayedCall(1000 * sec, this.setTo.bind(this), [item, toX, toY]);
   }
-  setTo(item,toX,toY) {
+  setTo(item, toX, toY) {
     item.setVelocity(0);
     item.setRotation(0);
     item.setPosition(toX, toY);
