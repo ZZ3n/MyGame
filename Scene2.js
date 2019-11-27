@@ -2,7 +2,12 @@
 
 class Scene2 extends Phaser.Scene {
   constructor() {
-    super("playGame"); // 씬 이름 저장하는거.
+    super( {
+      key: "playGame",
+      visible : false,
+      active : false
+    });
+    
   }
   preload() {
     // # 1 맵
