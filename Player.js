@@ -32,7 +32,7 @@ class Player {
       var preY = this.sprite.y;
       for (var n = 1; n <= this.invItems.getLength(); n++) {
         var temp = this.invItems.getLastNth(n, true);
-        temp.setVelocity((preX - temp.x) * 6, (preY - temp.y) * 6);
+        temp.setVelocity((preX - temp.x) * 20, (preY - temp.y) * 20);
         preX = temp.x;
         preY = temp.y;
       }
@@ -98,8 +98,8 @@ class Player {
     item.setRotation(0);
     item.setPosition(toX, toY);
     this.scene.items.add(item);
+    item.setCollideWorldBounds(true);
   }
-
 }
 /*
 var angle = (toY - item.y) / (toX - item.x);

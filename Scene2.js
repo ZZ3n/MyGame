@@ -40,6 +40,11 @@ class Scene2 extends Phaser.Scene {
     this.player1 = new Player(this, config.width / 2 - 100, config.height / 2 - 100, "player1", "p1");
     this.player2 = new Player(this, config.width / 2 + 100, config.height / 2 - 100, "player2", "p2");
     this.tornado = new Player(this, config.width / 2, config.height / 4, "tornado","tornado");
+    this.house1 = this.physics.add.staticSprite(100,100,"house1");
+    this.house1Stock = 0;
+    this.house2 = this.physics.add.staticSprite(config.width - 100, config.height - 100,"house2");
+    this.house2Stock = 0;
+    this.house2.itemMax = 40;
     //tornado constructor
     this.tornado.sprite.play("anim_tornado", true);
     this.tornado.sprite.setScale(2,2);
@@ -86,13 +91,23 @@ class Scene2 extends Phaser.Scene {
       font: "25px Arial",
       fill: "black"
     });
-    // 충돌 설정.
 
+    this.house1Display = this.add.text(this.house1.x - 32,this.house1.y + 40,"" + this.house1Stock + '/' + gameSettings.maxStock, {
+      font : "30px seriff",
+      fill : "black"
+    });
+    this.house2Display = this.add.text(this.house2.x - 32,this.house2.y + 40,"" + this.house2Stock + '/' + gameSettings.maxStock, {
+      font : "30px seriff",
+      fill : "black"
+    });
+
+
+
+    // 충돌 설정.
     this.physics.add.collider(this.platforms, this.items);
 
     this.physics.add.collider(this.player1.sprite, this.platforms);
     this.physics.add.collider(this.player2.sprite, this.platforms);
-    this.physics.add.collider(this.tornado.sprite,this.platforms);
 
     this.physics.add.collider(this.player1.sprite, this.items, this.player1.plusInvItem.bind(this.player1));
     this.physics.add.collider(this.player2.sprite, this.items, this.player2.plusInvItem.bind(this.player2));
@@ -102,12 +117,16 @@ class Scene2 extends Phaser.Scene {
 
     this.player2.invCollider = this.physics.add.collider(this.player1.sprite, this.player2.invItems, this.player2.itemPopUp.bind(this.player2));
     this.player1.invCollider = this.physics.add.collider(this.player2.sprite, this.player1.invItems, this.player1.itemPopUp.bind(this.player1));
-    this.tornado.invCollider = this.physics.add.collider(this.tornado.sprite, this.player1.invItems, this.player1.itemPopUp.bind(this.player1));
-    this.tornado.invCollider = this.physics.add.collider(this.tornado.sprite, this.player2.invItems, this.player2.itemPopUp.bind(this.player2));
+    this.physics.add.collider(this.tornado.sprite, this.player1.invItems, this.player1.itemPopUp.bind(this.player1));
+    this.physics.add.collider(this.tornado.sprite, this.player2.invItems, this.player2.itemPopUp.bind(this.player2));
 
-    this.tornado.sprite.setBounce(1);
+    this.physics.add.collider(this.player2.sprite, this.house1, this.storeToHouse1.bind(this)); //##$#$
+    this.physics.add.collider(this.player1.sprite, this.house2, this.storeToHouse2.bind(this)); //#$@!#
+
+    this.tornado.sprite.setBounce(2);
     this.tornado.sprite.setCollideWorldBounds(true);
-    this.tornado.sprite.setVelocity(100,100);
+    this.tornado.sprite.setVelocity(400,400);
+    this.tornado.sprite.setMaxVelocity(400,400);
   }
   update() {
     this.player1.moveManager(this.cursorKeys.up, this.cursorKeys.down,
@@ -117,6 +136,8 @@ class Scene2 extends Phaser.Scene {
     this.player2InventoryDisplay.setText("" + this.player2.invItems.getLength() + '/' + this.player2.itemMax);
     this.player1InventoryDisplay.setPosition(this.player1.sprite.x + 20, this.player1.sprite.y);
     this.player2InventoryDisplay.setPosition(this.player2.sprite.x + 20, this.player2.sprite.y);
+    this.house1Display.setText("" + this.house1Stock + '/' + gameSettings.maxStock);
+    this.house2Display.setText("" + this.house2Stock + '/' + gameSettings.maxStock);
     this.player1.invManager();
     this.player2.invManager();
     //console.log(this.items.getLength());
@@ -125,6 +146,11 @@ class Scene2 extends Phaser.Scene {
     } else {
       this.timedItemEvent.paused = false;
     }
+    if (this.house1Stock >= gameSettings.maxStock || this.house2Stock >= gameSettings.maxStock) {
+      super.active = false;
+      this.scene.start("endGame");
+    }
+      //ending
   }
 
   plusItemInScene() {
@@ -137,7 +163,20 @@ class Scene2 extends Phaser.Scene {
       item.play("anim_green");
     }
     item.setCollideWorldBounds(true);
-    
+  }
+
+  storeToHouse1(player2Sprite,House1Sprite) {
+    console.log(this);
+    this.house1Stock = this.house1Stock +  this.player2.invItems.getLength();
+    console.log(this.house1Stock);
+    this.player2.invItems.clear(false,true);
+  }
+
+  storeToHouse2(player1Sprite,House2Sprite) {
+    console.log(this);
+    this.house2Stock = this.house2Stock +  this.player1.invItems.getLength();
+    console.log(this.house2Stock);
+    this.player1.invItems.clear(false,true);
   }
 }
 
