@@ -9,24 +9,15 @@ class Scene2 extends Phaser.Scene {
     });
     
   }
+  init(data) {
+    console.log(data.map + " selected");
+    this.mapName = data.map;
+  }
   preload() {
+    console.log("Game Started");
     // # 1 맵
-    this.background = this.add.tileSprite(0, 0, config.width, config.height, "background");
-    this.background.setOrigin(0, 0);
-
     this.platforms = this.physics.add.staticGroup();
-    this.platforms.create(gameSettings.blockSize * 6, config.height * 2 / 4, 'block1');
-    this.platforms.create(config.width / 2, config.height / 2, 'block2');
-    this.platforms.create(config.width * 3 / 8, config.height * 2 / 8, 'block1');
-    this.platforms.create(config.width * 6 / 7, config.height * 1 / 4, 'block2');
-    this.platforms.create(config.width * 1 / 8, config.height * 5 / 5, 'block1');
-    this.platforms.create(config.width * 2 / 3, config.height * 8 / 10, 'block2');
-    this.platforms.create(592, 345, 'dol');
-    this.platforms.create(875, 560, 'dol');
-    this.platforms.create(100, 372, 'pull1');
-    this.platforms.create(592, 345, 'pull2');
-    this.platforms.create(720, 800, 'suninjang');
-    this.platforms.create(528, 8700, 'suninjang');
+    this.map = new GameMap(this,this.mapName);
     this.add.text(20, 20, "Playing game", {
       font: "10px Arial",
       fill: "yellow"
@@ -37,9 +28,9 @@ class Scene2 extends Phaser.Scene {
     this.items = this.physics.add.group();
     this.speedups = this.physics.add.group();
     // # 2-2 플레이어 객체 생성.
-    this.player1 = new Player(this, config.width / 2 - 100, config.height / 2 - 100, "player1", "p1");
-    this.player2 = new Player(this, config.width / 2 + 100, config.height / 2 - 100, "player2", "p2");
-    this.tornado = new Player(this, config.width / 2, config.height / 4, "tornado","tornado");
+    this.player1 = new Player(this, 160, 160, "player1", "p1");
+    this.player2 = new Player(this, config.width -160, config.height - 160, "player2", "p2");
+    this.tornado = new Player(this, config.width / 2, config.height / 2, "tornado","tornado");
     this.house1 = this.physics.add.staticSprite(100,100,"house1");
     this.house1Stock = 0;
     this.house2 = this.physics.add.staticSprite(config.width - 100, config.height - 100,"house2");
@@ -59,21 +50,18 @@ class Scene2 extends Phaser.Scene {
 
   create() {
 
-    var maxObjects = 15;
-
-    for (var i = 0; i <= maxObjects; i++) {
+    for (var i = 0; i <= gameSettings.maxObjects; i++) {
       this.plusItemInScene();
     }
     this.timedItemEvent = this.time.addEvent({
-      delay: 200,
+      delay: 3500,
       callbackScope: this,
       callback: this.plusItemInScene,
       loop: true
       //startAt : 1000
     });
-    var speedUpCount = 10;
 
-    for (i = 0; i <= speedUpCount; i++) {
+    for (i = 0; i <= gameSettings.speedUpMax; i++) {
       var item = this.physics.add.sprite(32, 32, "speedup");
       this.speedups.add(item);
       item.setRandomPosition(0, 0, game.config.width, game.config.height);
@@ -81,7 +69,7 @@ class Scene2 extends Phaser.Scene {
       item.setCollideWorldBounds(true);
       item.setBounce(1);
     }
-
+    // TEXT DISPLAYS
     this.player1InventoryDisplay = this.add.text(20, 100, "" + this.player1.invItems.getLength() + '/' + this.player1.itemMax, {
       font: "25px Arial",
       fill: "black"
@@ -104,57 +92,84 @@ class Scene2 extends Phaser.Scene {
 
 
     // 충돌 설정.
-    this.physics.add.collider(this.platforms, this.items);
-
+      // 플랫폼과 아이템s (재배치 위함.)
+    this.physics.add.overlap(this.platforms, this.speedups, this.mySetRandomPosition.bind(this));
+    this.physics.add.overlap(this.platforms, this.items, this.mySetRandomPosition.bind(this));
+      //플레이어와 플랫폼
     this.physics.add.collider(this.player1.sprite, this.platforms);
     this.physics.add.collider(this.player2.sprite, this.platforms);
-
-    this.physics.add.collider(this.player1.sprite, this.items, this.player1.plusInvItem.bind(this.player1));
-    this.physics.add.collider(this.player2.sprite, this.items, this.player2.plusInvItem.bind(this.player2));
-
-    this.physics.add.collider(this.player1.sprite, this.speedups, this.player1.plusSpeedUp.bind(this.player1));
-    this.physics.add.collider(this.player2.sprite, this.speedups, this.player2.plusSpeedUp.bind(this.player2));
-
+      //플레이어와 아이템
+    this.physics.add.overlap(this.player1.sprite, this.items, this.player1.plusInvItem.bind(this.player1));
+    this.physics.add.overlap(this.player2.sprite, this.items, this.player2.plusInvItem.bind(this.player2));
+      //플레이어와 스피드업
+    this.physics.add.overlap(this.player1.sprite, this.speedups, this.player1.plusSpeedUp.bind(this.player1));
+    this.physics.add.overlap(this.player2.sprite, this.speedups, this.player2.plusSpeedUp.bind(this.player2));
+      //플레이어와 상대 플레이어의 아이템
     this.player2.invCollider = this.physics.add.collider(this.player1.sprite, this.player2.invItems, this.player2.itemPopUp.bind(this.player2));
     this.player1.invCollider = this.physics.add.collider(this.player2.sprite, this.player1.invItems, this.player1.itemPopUp.bind(this.player1));
-    this.physics.add.collider(this.tornado.sprite, this.player1.invItems, this.player1.itemPopUp.bind(this.player1));
-    this.physics.add.collider(this.tornado.sprite, this.player2.invItems, this.player2.itemPopUp.bind(this.player2));
-
+      //토네이도와 플레이어
+    this.physics.add.overlap(this.tornado.sprite, this.player1.invItems, this.player1.itemPopUp.bind(this.player1));
+    this.physics.add.overlap(this.tornado.sprite, this.player2.invItems, this.player2.itemPopUp.bind(this.player2));
+      //플레이어와 상대 집.
     this.physics.add.collider(this.player2.sprite, this.house1, this.storeToHouse1.bind(this)); //##$#$
     this.physics.add.collider(this.player1.sprite, this.house2, this.storeToHouse2.bind(this)); //#$@!#
-
-    this.tornado.sprite.setBounce(2);
+      //플레이와 자기 집. // 아직 아무 일 없음.
+    this.physics.add.collider(this.player2.sprite, this.house2); //##$#$
+    this.physics.add.collider(this.player1.sprite, this.house2);
+    
+    //토네이도 Property.
+    
     this.tornado.sprite.setCollideWorldBounds(true);
-    this.tornado.sprite.setVelocity(400,400);
-    this.tornado.sprite.setMaxVelocity(400,400);
+    var angle = Math.random() * 2 * Math.PI;
+    var ix = Math.cos(angle);
+    var iy = Math.sin(angle);
+    this.tornado.sprite.setBounce(1.17,1.17);
+    this.tornado.sprite.setVelocity( 200 * ix, 200 * iy);
+    this.tornado.sprite.setMaxVelocity(2000,2000);
+    console.log("tornado Velocity [ %d,%d ]",200 * ix, 200 * iy);
   }
   update() {
-    this.player1.moveManager(this.cursorKeys.up, this.cursorKeys.down,
-      this.cursorKeys.left, this.cursorKeys.right);
+    //플레이어 이동
+    this.player1.moveManager(this.cursorKeys.up, this.cursorKeys.down,this.cursorKeys.left, this.cursorKeys.right);
     this.player2.moveManager(this.keyW, this.keyS, this.keyA, this.keyD);
+    //Text Displays update
     this.player1InventoryDisplay.setText("" + this.player1.invItems.getLength() + '/' + this.player1.itemMax);
     this.player2InventoryDisplay.setText("" + this.player2.invItems.getLength() + '/' + this.player2.itemMax);
     this.player1InventoryDisplay.setPosition(this.player1.sprite.x + 20, this.player1.sprite.y);
     this.player2InventoryDisplay.setPosition(this.player2.sprite.x + 20, this.player2.sprite.y);
     this.house1Display.setText("" + this.house1Stock + '/' + gameSettings.maxStock);
     this.house2Display.setText("" + this.house2Stock + '/' + gameSettings.maxStock);
+    //Player inventory movement
     this.player1.invManager();
     this.player2.invManager();
-    //console.log(this.items.getLength());
-    if (this.items.getLength() >= 30) {
+    //Item re-generation
+    if (this.items.getLength() >= gameSettings.maxObjects + 5) {
       this.timedItemEvent.paused = true;
     } else {
       this.timedItemEvent.paused = false;
     }
-    if (this.house1Stock >= gameSettings.maxStock || this.house2Stock >= gameSettings.maxStock) {
+    // victory determination
+    if (this.house1Stock >= gameSettings.maxStock) {
       super.active = false;
-      this.scene.start("endGame");
+      this.scene.start("endGame",{player : "player2"});
     }
-      //ending
+    else if (this.house2Stock >= gameSettings.maxStock) {
+      super.active = false;
+      this.scene.start("endGame",{player : "player1"});
+    }
   }
-
+  mySetRandomPosition(platform,item) {
+    item.setRandomPosition(0,0,game.config.width,game.config.height);
+  }
+  //아이템을 씬에 하나 추가하는 함수.
   plusItemInScene() {
-    var item = this.physics.add.sprite(32, 32, "item_pink");
+    var item = this.physics.add.sprite(0,0,"bread").setScale(0.7,0.7);
+    
+    item.setRandomPosition(0,0,game.config.width, game.config.height);
+    item.setCollideWorldBounds(true);
+    item.setDepth(1);
+    this.items.add(item);
+    /*var item = this.physics.add.sprite(32, 32, "item_pink");
     this.items.add(item);
     item.setRandomPosition(0, 0, game.config.width, game.config.height);
     if (Math.random() > 0.5) {
@@ -162,27 +177,16 @@ class Scene2 extends Phaser.Scene {
     } else {
       item.play("anim_green");
     }
-    item.setCollideWorldBounds(true);
+    item.setCollideWorldBounds(true);*/
   }
-
+  //플레이어 2가 플레이어 1의 집에 보석을 넣는 함수.
   storeToHouse1(player2Sprite,House1Sprite) {
-    console.log(this);
     this.house1Stock = this.house1Stock +  this.player2.invItems.getLength();
-    console.log(this.house1Stock);
     this.player2.invItems.clear(false,true);
   }
-
+  //플레이어 1이 플레이어 2의 집에 보석을 넣는 함수.
   storeToHouse2(player1Sprite,House2Sprite) {
-    console.log(this);
     this.house2Stock = this.house2Stock +  this.player1.invItems.getLength();
-    console.log(this.house2Stock);
     this.player1.invItems.clear(false,true);
   }
 }
-
-/*
-
-현재 남겨진 문제.
-#1 좌우 방향키와 위아래 키를 같이 누르면 애니메이션이 멈추는 현상.
-#2 방향키를 한번 누르면 애니메이션이 계속 재생되는 현상 => isUP으로 해결 가능성 보임.
-*/

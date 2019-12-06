@@ -6,7 +6,8 @@ class Player {
     this.name = name;
     this.scene = scene;
     this.sprite = scene.physics.add.sprite(x, y, spriteName);
-    this.sprite.setSize(38, 50);
+    this.sprite.setSize(20, 20);
+    this.sprite.setDepth(2);
     this.sprite.setCollideWorldBounds(true);
     this.invItems = scene.physics.add.group();
     this.speed = gameSettings.playerSpeed;
