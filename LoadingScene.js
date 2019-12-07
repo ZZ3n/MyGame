@@ -59,18 +59,31 @@ class Loading extends Phaser.Scene {
       frameWidth: 48,
       frameHeight: 48
     }); // 모두 소문자임에 주의!
+
     this.load.spritesheet("player2", "assets/spritesheets/P2.png", {
       frameWidth: 64,
       frameHeight: 64
     }); // 모두 소문자임에 주의!
+/*
     this.load.spritesheet("item_pink", "assets/spritesheets/pink.png", {
       frameWidth: 32,
       frameHeight: 32
     });
+
     this.load.spritesheet("item_green", "assets/spritesheets/green.png", {
       frameWidth: 32,
       frameHeight: 32
     });
+    */
+   this.load.spritesheet("item_chamchi", "assets/spritesheets/ChamChi.png", {
+    frameWidth: 64,
+    frameHeight: 64
+  });
+
+  this.load.spritesheet("item_bread", "assets/spritesheets/bread.png", {
+    frameWidth: 64,
+    frameHeight: 64
+  });
   }
 
   create() {
@@ -177,7 +190,7 @@ class Loading extends Phaser.Scene {
 
     //#########################
 
-    this.anims.create({
+    /*this.anims.create({
       key: "anim_pink",
       frames: this.anims.generateFrameNumbers("item_pink"),
       frameRate: 20,
@@ -189,6 +202,27 @@ class Loading extends Phaser.Scene {
       frames: this.anims.generateFrameNumbers("item_green"),
       frameRate: 20,
       repeat: -1
+    });*/
+    this.anims.create({
+      key: "anim_chamchi",
+      frames: this.anims.generateFrameNumbers("item_chamchi", {
+        start: 0,
+        end: 13
+      }),
+      frameRate : 10,
+      repeat : -1,
+      repeatDelay : 1000
+    });
+
+    this.anims.create({
+      key: "anim_bread",
+      frames: this.anims.generateFrameNumbers("item_bread", {
+        start: 0,
+        end: 15
+      }),
+      frameRate : 10,
+      repeat : -1,
+      repeatDelay : 1000
     });
 
     //##########################

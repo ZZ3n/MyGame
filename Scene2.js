@@ -36,9 +36,17 @@ class Scene2 extends Phaser.Scene {
     this.house2 = this.physics.add.staticSprite(config.width - 100, config.height - 100,"house2");
     this.house2Stock = 0;
     this.house2.itemMax = 40;
-    //tornado constructor
+    //Tornado constructor
     this.tornado.sprite.play("anim_tornado", true);
     this.tornado.sprite.setScale(2,2);
+    this.tornado.sprite.setCollideWorldBounds(true);
+    var angle = Math.random() * 2 * Math.PI;
+    var ix = Math.cos(angle);
+    var iy = Math.sin(angle);
+    this.tornado.sprite.setBounce(1.17,1.17);
+    this.tornado.sprite.setVelocity( 200 * ix, 200 * iy);
+    this.tornado.sprite.setMaxVelocity(1000,1000);
+    console.log("Tornado Velocity [ %d,%d ]",200 * ix, 200 * iy);
     // # 3 키 바인딩
 
     this.cursorKeys = this.input.keyboard.createCursorKeys();
@@ -49,12 +57,27 @@ class Scene2 extends Phaser.Scene {
   }
 
   create() {
+    //##############################################33
+    //for debug
+    this.timedItemEvent = this.time.addEvent({
+      delay: 1500,
+      callbackScope: this,
+      callbackContext: this,
+      callback: function() {
+        var x = this.tornado.sprite.body.velocity.x;
+        var y = this.tornado.sprite.body.velocity.y;
+        console.log("Tornado Velocity [ %d,%d ]",x,y);
+      },
+      loop: true
+      //startAt : 1000
+    });
+    //##############################################33
 
     for (var i = 0; i <= gameSettings.maxObjects; i++) {
       this.plusItemInScene();
     }
     this.timedItemEvent = this.time.addEvent({
-      delay: 3500,
+      delay: 1500,
       callbackScope: this,
       callback: this.plusItemInScene,
       loop: true
@@ -117,16 +140,6 @@ class Scene2 extends Phaser.Scene {
     this.physics.add.collider(this.player2.sprite, this.house2); //##$#$
     this.physics.add.collider(this.player1.sprite, this.house2);
     
-    //토네이도 Property.
-    
-    this.tornado.sprite.setCollideWorldBounds(true);
-    var angle = Math.random() * 2 * Math.PI;
-    var ix = Math.cos(angle);
-    var iy = Math.sin(angle);
-    this.tornado.sprite.setBounce(1.17,1.17);
-    this.tornado.sprite.setVelocity( 200 * ix, 200 * iy);
-    this.tornado.sprite.setMaxVelocity(2000,2000);
-    console.log("tornado Velocity [ %d,%d ]",200 * ix, 200 * iy);
   }
   update() {
     //플레이어 이동
@@ -157,14 +170,22 @@ class Scene2 extends Phaser.Scene {
       super.active = false;
       this.scene.start("endGame",{player : "player1"});
     }
+    if (this.tornado.sprite.body.velocity.x >= 700 ||this.tornado.sprite.body.velocity.y >= 700) {
+      this.tornado.sprite.setTint(0xff2255);
+    } 
+
   }
   mySetRandomPosition(platform,item) {
     item.setRandomPosition(0,0,game.config.width,game.config.height);
   }
   //아이템을 씬에 하나 추가하는 함수.
   plusItemInScene() {
-    var item = this.physics.add.sprite(0,0,"bread").setScale(0.7,0.7);
-    
+    var item = this.physics.add.sprite(0,0,"item_chamchi").setScale(0.6,0.6);
+    if (Math.random() > 0.5) {
+      item.play("anim_chamchi");
+    } else {
+      item.play("anim_bread");
+    }
     item.setRandomPosition(0,0,game.config.width, game.config.height);
     item.setCollideWorldBounds(true);
     item.setDepth(1);
