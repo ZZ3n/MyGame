@@ -97,17 +97,17 @@ class GameMap {
 
             this.scene.platforms.create(gameSettings.blockSize * 4, gameSettings.blockSize, 'map2block5');
             //##
-            this.scene.platforms.create(gameSettings.blocksize * 12, gameSettings.blocksize * 20.5, 'map2block5');
-            this.scene.platforms.create(gameSettings.blocksize * 14.5, gameSettings.blocksize * 22.5, 'map2block4_1');
+            this.scene.platforms.create(gameSettings.blockSize * 12, gameSettings.blockSize * 20.5, 'map2block5');
+            this.scene.platforms.create(gameSettings.blockSize * 14.5, gameSettings.blockSize * 22.5, 'map2block4_1');
 
-            this.scene.platforms.create(gameSettings.blocksize * 12, gameSettings.blocksize * 9.5, 'map2block5');
-            this.scene.platforms.create(gameSettings.blocksize * 14.5, gameSettings.blocksize * 7.5, 'map2block4_1');
+            this.scene.platforms.create(gameSettings.blockSize * 12, gameSettings.blockSize * 9.5, 'map2block5');
+            this.scene.platforms.create(gameSettings.blockSize * 14.5, gameSettings.blockSize * 7.5, 'map2block4_1');
 
-            this.scene.platforms.create(gameSettings.blocksize * 28, gameSettings.blocksize * 9.5, 'map2block5');
-            this.scene.platforms.create(gameSettings.blocksize * 25.5, gameSettings.blocksize * 7.5, 'map2block4_1');
+            this.scene.platforms.create(gameSettings.blockSize * 28, gameSettings.blockSize * 9.5, 'map2block5');
+            this.scene.platforms.create(gameSettings.blockSize * 25.5, gameSettings.blockSize * 7.5, 'map2block4_1');
 
-            this.scene.platforms.create(gameSettings.blocksize * 28, gameSettings.blocksize * 20.5, 'map2block5');
-            this.scene.platforms.create(gameSettings.blocksize * 25.5, gameSettings.blocksize * 22.5, 'map2block4_1');
+            this.scene.platforms.create(gameSettings.blockSize * 28, gameSettings.blockSize * 20.5, 'map2block5');
+            this.scene.platforms.create(gameSettings.blockSize * 25.5, gameSettings.blockSize * 22.5, 'map2block4_1');
             //##
             //this.scene.platforms.create(gameSettings.blockSize*33, gameSettings.blockSize*15., 'map2block4_2');
             //xB1,yB1 에 장애물 추가...
