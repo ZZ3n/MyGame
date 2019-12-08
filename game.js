@@ -15,12 +15,12 @@ var config = {
 };
 
 var gameSettings = {
-  maxObjects : 15,
-  speedUpMax : 10,
-  maxStock : 70,
-  blockSize : 32,
+  maxObjects: 15,
+  speedUpMax: 10,
+  maxStock: 70,
+  blockSize: 32,
   playerSpeed: 200,
-  playerFramerate : 10
+  playerFramerate: 10
 };
 
 var game = new Phaser.Game(config);

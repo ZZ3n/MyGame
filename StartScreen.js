@@ -13,11 +13,11 @@ class StartScreen extends Phaser.Scene {
         //?로고 만들어야함.
         this.mapName = "map1";
         console.log("Button Up!");
-        this.button = this.add.image(config.width/2,config.height*2/3,'ButtonImg');
-        this.map1 = this.add.image(config.width/5,config.height*4/5,"map1");
-        this.map2 = this.add.image(config.width*4/5,config.height*4/5,"map2");
-        this.map1.setScale(0.3,0.3);
-        this.map2.setScale(0.3,0.3);
+        this.button = this.add.image(config.width / 2, config.height * 2 / 3, 'ButtonImg');
+        this.map1 = this.add.image(config.width / 5, config.height * 4 / 5, "map1");
+        this.map2 = this.add.image(config.width * 4 / 5, config.height * 4 / 5, "map2");
+        this.map1.setScale(0.3, 0.3);
+        this.map2.setScale(0.3, 0.3);
     }
 
     create() { // key: "bootGame",
@@ -30,7 +30,7 @@ class StartScreen extends Phaser.Scene {
                 this.scene.map2.clearTint();
             }
             this.scene.mapName = "map1";
-           this.setTint(0xff4444);
+            this.setTint(0xff4444);
         });
         this.map2.on('pointerup', function () {
             if (this.scene.mapName == "map1") {
@@ -41,10 +41,12 @@ class StartScreen extends Phaser.Scene {
         });
     }
     update() {
-        
+
     }
     startGame() {
-        this.scene.start("playGame",{map : this.mapName});
+        this.scene.start("playGame", {
+            map: this.mapName
+        });
     }
 
 
