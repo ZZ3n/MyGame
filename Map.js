@@ -95,8 +95,6 @@ class GameMap {
             this.scene.platforms.create(gameSettings.blockSize * 37.5, gameSettings.blockSize * 15.5, 'map2block4_1');
             this.scene.platforms.create(gameSettings.blockSize * 33, gameSettings.blockSize * 15.5, 'map2block4_2');
 
-            this.scene.platforms.create(gameSettings.blockSize * 4, gameSettings.blockSize, 'map2block5');
-            //##
             this.scene.platforms.create(gameSettings.blockSize * 12, gameSettings.blockSize * 20.5, 'map2block5');
             this.scene.platforms.create(gameSettings.blockSize * 14.5, gameSettings.blockSize * 22.5, 'map2block4_1');
 
@@ -108,6 +106,10 @@ class GameMap {
 
             this.scene.platforms.create(gameSettings.blockSize * 28, gameSettings.blockSize * 20.5, 'map2block5');
             this.scene.platforms.create(gameSettings.blockSize * 25.5, gameSettings.blockSize * 22.5, 'map2block4_1');
+            
+            //##
+            this.scene.platforms.create(gameSettings.blockSize*5.5, gameSettings.blockSize*26.5, 'map2block6');
+            this.scene.platforms.create(gameSettings.blockSize*34.5, gameSettings.blockSize*3.5, 'map2block6');
             //##
             //this.scene.platforms.create(gameSettings.blockSize*33, gameSettings.blockSize*15., 'map2block4_2');
             //xB1,yB1 에 장애물 추가...

@@ -73,11 +73,11 @@ class Scene2 extends Phaser.Scene {
     });
     //##############################################33
 
-    for (var i = 0; i <= gameSettings.maxObjects; i++) {
+    for (var i = 0; i <= gameSettings.maxObjects + 10; i++) {
       this.plusItemInScene();
     }
     this.timedItemEvent = this.time.addEvent({
-      delay: 1500,
+      delay: 1000,
       callbackScope: this,
       callback: this.plusItemInScene,
       loop: true

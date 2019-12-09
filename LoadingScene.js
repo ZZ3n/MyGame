@@ -14,6 +14,8 @@ class Loading extends Phaser.Scene {
       fill: '#00ff00',
       fontSize: 50
     });
+    
+    this.load.image('TitleImg', 'assets/images/Title.png');
     this.load.image('ButtonImg', 'assets/images/StartButton.png');
 
     this.load.image("map1", "assets/images/map1/map1.png");

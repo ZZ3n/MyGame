@@ -16,8 +16,8 @@ var config = {
 
 var gameSettings = {
   maxObjects: 15,
-  speedUpMax: 10,
-  maxStock: 70,
+  speedUpMax: 15,
+  maxStock: 50,
   blockSize: 32,
   playerSpeed: 200,
   playerFramerate: 10
