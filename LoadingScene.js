@@ -22,6 +22,9 @@ class Loading extends Phaser.Scene {
     this.load.image("map2", "assets/images/map2/map2.PNG");
     this.load.image("speedup", "assets/images/SpeedUp.png");
 
+    this.load.image("P2_win_grass", "assets/images/P2_win_grass.png");
+    this.load.image("P1_win_grass", "assets/images/P1_win_grass.png");
+
     this.load.image("waterblock1", "assets/images/map1/waterblock1.PNG");
     this.load.image("waterblock2", "assets/images/map1/waterblock2.PNG");
     this.load.image("waterblock3", "assets/images/map1/waterblock3.PNG");

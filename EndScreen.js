@@ -14,12 +14,13 @@ class EndScreen extends Phaser.Scene {
         this.Victory = data.player;
     }
     preload() {
-        this.add.image(config.width / 5, config.height / 2, this.Victory).setScale(2.5);
-        this.startText = this.add.text(config.width * 2 / 5, config.height / 2,
-            this.Victory + " Win!", {
-                font: "50px Arial",
-                fill: "yellow"
-            });
+        if (this.Victory == "player1") {
+            this.add.image(config.width / 2, config.height / 2, "P1_win_grass");
+        }
+        else {
+            this.add.image(config.width / 2, config.height / 2, "P2_win_grass");
+        }
+        
         console.log(this);
     }
 
