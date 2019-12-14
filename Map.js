@@ -15,7 +15,11 @@ class GameMap {
     makeWall() { // 이름따라 장애물 추가하기.
 
         if (this.mapName == "map1") {
-
+            // ## Music
+        this.scene.sound.add('bgm_chew').play({
+            volume : 0.35,
+        loop : true,
+          });
             this.scene.background = this.scene.add.tileSprite(0, 0, config.width, config.height, "map1");
             this.scene.background.setOrigin(0, 0);
 
@@ -33,10 +37,10 @@ class GameMap {
             this.scene.platforms.create(gameSettings.blockSize * 7.5, gameSettings.blockSize * 1.5, 'map1block8');
             this.scene.platforms.create(gameSettings.blockSize * 6.5, gameSettings.blockSize * 2.5, 'map1block8');
 
-            this.scene.platforms.create(gameSettings.blockSize * 3.03, gameSettings.blockSize * 10.45, 'map1block5');
+            this.scene.platforms.create(gameSettings.blockSize * 3.00, gameSettings.blockSize * 10.45, 'map1block5');
             this.scene.platforms.create(gameSettings.blockSize * 7.5, gameSettings.blockSize * 9, 'map1block7');
 
-            this.scene.platforms.create(gameSettings.blockSize * 3.03, gameSettings.blockSize * 18.45, 'map1block5');
+            this.scene.platforms.create(gameSettings.blockSize * 3.00, gameSettings.blockSize * 18.45, 'map1block5');
             this.scene.platforms.create(gameSettings.blockSize * 7.5, gameSettings.blockSize * 20, 'map1block7');
 
             this.scene.platforms.create(gameSettings.blockSize * 8.5, gameSettings.blockSize * 29.5, 'map1block8');
@@ -74,7 +78,10 @@ class GameMap {
             // 장애물 그룹으로 묶기.
 
         } else if (this.mapName == 'map2') {
-
+            this.scene.sound.add('bgm_desert').play({
+                volume : 0.35,
+            loop : true,
+              });
             this.scene.background = this.scene.add.tileSprite(0, 0, config.width, config.height, "map2");
             this.scene.background.setOrigin(0, 0);
 

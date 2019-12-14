@@ -18,11 +18,7 @@ class Scene2 extends Phaser.Scene {
     // # 1 맵
     this.platforms = this.physics.add.staticGroup();
     this.map = new GameMap(this, this.mapName);
-    this.add.text(20, 20, "Playing game", {
-      font: "10px Arial",
-      fill: "yellow"
-    });
-
+    
     // # 2 인게임 오브젝트 생성.
     // # 2-1 그룹 생성
     this.items = this.physics.add.group();

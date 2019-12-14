@@ -17,6 +17,9 @@ class Player {
   }
 
   plusInvItem(playerSprite, item) {
+    this.scene.sound.add('sound_Item').play({
+    volume : 0.35,
+    });
     if (this.invItems.getLength() < this.itemMax) {
       this.scene.items.remove(item);
       item.name = "" + this.invItems.getLength();
@@ -62,6 +65,9 @@ class Player {
   }
 
   plusSpeedUp(playerSprite, speedup) {
+    this.scene.sound.add('sound_speedUp').play({
+      volume : 0.35,
+      });
     this.speed += 20;
     speedup.destroy();
   }

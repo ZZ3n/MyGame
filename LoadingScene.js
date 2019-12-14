@@ -14,7 +14,11 @@ class Loading extends Phaser.Scene {
       fill: '#00ff00',
       fontSize: 50
     });
-    
+    this.load.audio('bgm_chew','assets/audio/bgm_chew.mp3');
+    this.load.audio('bgm_desert','assets/audio/bgm_desert.mp3');
+    this.load.audio('sound_Item','assets/audio/sound_earnItem.wav');
+    this.load.audio('sound_speedUp','assets/audio/sound_speedup.wav');
+
     this.load.image('TitleImg', 'assets/images/Title.png');
     this.load.image('ButtonImg', 'assets/images/StartButton.png');
 

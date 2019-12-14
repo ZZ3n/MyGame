@@ -11,13 +11,16 @@ var config = {
     arcade: {
       debug: false
     }
+  },
+  audio : {
+    disableWebAudio : true
   }
 };
 
 var gameSettings = {
   maxObjects: 15,
   speedUpMax: 15,
-  maxStock: 1,
+  maxStock: 50,
   blockSize: 32,
   playerSpeed: 200,
   playerFramerate: 10
