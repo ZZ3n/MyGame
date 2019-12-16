@@ -73,7 +73,7 @@ class Scene2 extends Phaser.Scene {
       this.plusItemInScene();
     }
     this.timedItemEvent = this.time.addEvent({
-      delay: 1000,
+      delay: 888,
       callbackScope: this,
       callback: this.plusItemInScene,
       loop: true
@@ -189,15 +189,6 @@ class Scene2 extends Phaser.Scene {
     item.setCollideWorldBounds(true);
     item.setDepth(1);
     this.items.add(item);
-    /*var item = this.physics.add.sprite(32, 32, "item_pink");
-    this.items.add(item);
-    item.setRandomPosition(0, 0, game.config.width, game.config.height);
-    if (Math.random() > 0.5) {
-      item.play("anim_pink");
-    } else {
-      item.play("anim_green");
-    }
-    item.setCollideWorldBounds(true);*/
   }
   //플레이어 2가 플레이어 1의 집에 보석을 넣는 함수.
   storeToHouse1(player2Sprite, House1Sprite) {

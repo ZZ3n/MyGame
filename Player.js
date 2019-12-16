@@ -108,10 +108,3 @@ class Player {
     item.setCollideWorldBounds(true);
   }
 }
-/*
-var angle = (toY - item.y) / (toX - item.x);
-    angle = Math.atan(angle);
-    var dist = Math.sqrt((toX - item.x) * (toX - item.x) + (toY - item.y) * (toY - item.y));
-    var velX = Math.cos(angle) * (dist * 2);
-    var velY = Math.sin(angle) * (dist * 2);
-    */

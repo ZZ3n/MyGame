@@ -24,7 +24,11 @@ class Loading extends Phaser.Scene {
 
     this.load.image("map1", "assets/images/map1/map1.png");
     this.load.image("map2", "assets/images/map2/map2.PNG");
+
     this.load.image("speedup", "assets/images/SpeedUp.png");
+    this.load.image("house1", "assets/images/house1.png");
+    this.load.image("house2", "assets/images/house2.png");
+    this.load.image("bread", "assets/images/bread.png");
 
     this.load.image("P2_win_grass", "assets/images/P2_win_grass.png");
     this.load.image("P1_win_grass", "assets/images/P1_win_grass.png");
@@ -58,9 +62,7 @@ class Loading extends Phaser.Scene {
     this.load.image("map2block9", "assets/images/map2/map2_block9.PNG");
     this.load.image("map2block10", "assets/images/map2/map2_block10.PNG");
 
-    this.load.image("house1", "assets/images/house1.png");
-    this.load.image("house2", "assets/images/house2.png");
-    this.load.image("bread", "assets/images/bread.png");
+    
 
     this.load.spritesheet("player1", "assets/spritesheets/P1.png", {
       frameWidth: 64,
@@ -76,17 +78,7 @@ class Loading extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64
     }); // 모두 소문자임에 주의!
-    /*
-        this.load.spritesheet("item_pink", "assets/spritesheets/pink.png", {
-          frameWidth: 32,
-          frameHeight: 32
-        });
-
-        this.load.spritesheet("item_green", "assets/spritesheets/green.png", {
-          frameWidth: 32,
-          frameHeight: 32
-        });
-        */
+    
     this.load.spritesheet("item_chamchi", "assets/spritesheets/ChamChi.png", {
       frameWidth: 64,
       frameHeight: 64
@@ -202,19 +194,6 @@ class Loading extends Phaser.Scene {
 
     //#########################
 
-    /*this.anims.create({
-      key: "anim_pink",
-      frames: this.anims.generateFrameNumbers("item_pink"),
-      frameRate: 20,
-      repeat: -1
-    });
-
-    this.anims.create({
-      key: "anim_green",
-      frames: this.anims.generateFrameNumbers("item_green"),
-      frameRate: 20,
-      repeat: -1
-    });*/
     this.anims.create({
       key: "anim_chamchi",
       frames: this.anims.generateFrameNumbers("item_chamchi", {
